@@ -1,0 +1,11 @@
+npm init -y - иницилизация проекта
+npm install express - для написания кода для сервера
+npm install mongoose - для подключения к бд
+npm i -D nodemon - обновление сервера без перезапуска
+npm install dotenv - библиотека для хранения секретных данных
+
+"type": "module" - для использования import
+"scripts": {
+    "start": "node index.js", - дефолт запуск (npm start)
+    "dev": "nodemon index.js" - запуск с обновлением без перезапуска (npm run dev)
+}
