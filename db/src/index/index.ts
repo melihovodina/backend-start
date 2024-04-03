@@ -1,17 +1,17 @@
 import express from "express"
 import mongoose from "mongoose"
-import Post from "./post.js";
+import Post from "../post/post";
 import { config } from 'dotenv';
-config(); //загрузка переменных окружения из файла .env
+config({ path: './db/other/.env'}); //загрузка переменных окружения из файла .env
 
-const PORT = process.env.PORT; //наш порт
-const DB = process.env.DB; //ссылка бд
+const PORT = process.env.PORT || 1; //наш порт
+const DB = process.env.DB || ""; //ссылка бд
 const app = express() //экземпляр, к нему нужно все писать
 
 app.use(express.json()) //добавление middleware для парсинга json в запросах
 
 //определение обработчика POST-запросов на корневой маршрут
-app.post('/', async (req, res) => {
+app.post('/', async (req: express.Request, res: express.Response) => {
     const {author, title, content, picture} = req.body //извлечение данных из тела запроса
     const post = await Post.create({author, title, content, picture}) //создание нового поста в бд
     res.json(post)

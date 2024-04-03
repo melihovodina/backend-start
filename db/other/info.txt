@@ -1,0 +1,19 @@
+npm init -y - иницилизация проекта
+tsc --init - иницилизация ts
+npm install express - для написания кода для сервера
+npm install mongoose - для подключения к бд
+npm install dotenv - библиотека для хранения секретных данных
+npm install --save-dev @types/express - типы express
+npm install --save-dev @types/node - типы node
+npm install --save-dev ts-node - удобный запуск ts
+npm install --save-dev nodemon - обновление без перезапуска
+
+package.json:
+"type": "module" - для использования import
+"scripts": {
+    "start": "tsc && node index.js",
+    "dev": "nodemon index.js"
+  } - удобный запуск
+
+tsconfig.json:
+"esModuleInterop": true - для использования дефолт импортов
