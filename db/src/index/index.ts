@@ -1,6 +1,6 @@
 import express from "express"
 import mongoose from "mongoose"
-import Post from "../post/post";
+import router from "../router/router";
 import { config } from 'dotenv';
 config({ path: './db/other/.env'}); //загрузка переменных окружения из файла .env
 
@@ -9,21 +9,15 @@ const DB = process.env.DB || ""; //ссылка бд
 const app = express() //экземпляр, к нему нужно все писать
 
 app.use(express.json()) //добавление middleware для парсинга json в запросах
-
-//определение обработчика POST-запросов на корневой маршрут
-app.post('/', async (req: express.Request, res: express.Response) => {
-    const {author, title, content, picture} = req.body //извлечение данных из тела запроса
-    const post = await Post.create({author, title, content, picture}) //создание нового поста в бд
-    res.json(post)
-})
+app.use('/api', router); //использование запросов прописанных в router (можно использовать несколько)
 
 //функция для запуска приложения
 async function startApp(){
     try {
         await mongoose.connect(DB) //подключение к бд
         app.listen(PORT, () => console.log("listening port 5000")) //запуск сервера
-    } catch(e) {
-        console.log(e) //вывод ошибок в консоль
+    } catch(error) {
+        console.log(error) //вывод ошибок в консоль
     }
 }
 

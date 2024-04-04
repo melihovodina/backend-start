@@ -11,9 +11,16 @@ npm install --save-dev nodemon - обновление без перезапус�
 package.json:
 "type": "module" - для использования import
 "scripts": {
-    "start": "tsc && node index.js",
+    "start": "tsc && node db/src/index/index.js",
     "dev": "nodemon index.js"
   } - удобный запуск
 
 tsconfig.json:
-"esModuleInterop": true - для использования дефолт импортов
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "CommonJS",
+    "strict": true,
+    "esModuleInterop": true
+  }
+}

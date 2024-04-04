@@ -14,19 +14,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importDefault(require("mongoose"));
-const post_1 = __importDefault(require("../post/post"));
+const router_1 = __importDefault(require("../router/router"));
 const dotenv_1 = require("dotenv");
 (0, dotenv_1.config)({ path: './db/other/.env' }); //загрузка переменных окружения из файла .env
 const PORT = process.env.PORT || 1; //наш порт
 const DB = process.env.DB || ""; //ссылка бд
 const app = (0, express_1.default)(); //экземпляр, к нему нужно все писать
 app.use(express_1.default.json()); //добавление middleware для парсинга json в запросах
-//определение обработчика POST-запросов на корневой маршрут
-app.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { author, title, content, picture } = req.body; //извлечение данных из тела запроса
-    const post = yield post_1.default.create({ author, title, content, picture }); //создание нового поста в бд
-    res.json(post);
-}));
+app.use('/api', router_1.default); //использование запросов прописанных в router (можно использовать несколько)
 //функция для запуска приложения
 function startApp() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -34,8 +29,8 @@ function startApp() {
             yield mongoose_1.default.connect(DB); //подключение к бд
             app.listen(PORT, () => console.log("listening port 5000")); //запуск сервера
         }
-        catch (e) {
-            console.log(e); //вывод ошибок в консоль
+        catch (error) {
+            console.log(error); //вывод ошибок в консоль
         }
     });
 }
