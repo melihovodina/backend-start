@@ -3,7 +3,11 @@ tsc --init - иницилизация ts
 npm install express - для написания кода для сервера
 npm install mongoose - для подключения к бд
 npm install dotenv - библиотека для хранения секретных данных
+npm install express-fileupload - для работы с файлами
+npm install uuid - генерация id
 npm install --save-dev @types/express - типы express
+npm install --save-dev @types/express-fileupload
+npm install --save-dev @types/uuid
 npm install --save-dev @types/node - типы node
 npm install --save-dev ts-node - удобный запуск ts
 npm install --save-dev nodemon - обновление без перезапуска

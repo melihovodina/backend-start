@@ -1,27 +1,30 @@
-import express from "express"
-import mongoose from "mongoose"
-import router from "../router/router";
-import { config } from 'dotenv';
-config({ path: './db/other/.env'}); //загрузка переменных окружения из файла .env
+import express from "express" // Импорт библиотеки Express
+import mongoose from "mongoose" // Импорт библиотеки Mongoose для работы с MongoDB
+import router from "../router/router" // Импорт роутера
+import fileUpload from "express-fileupload" // Импорт библиотеки для загрузки файлов
+import { config } from 'dotenv'; 
+config({ path: './db/other/.env'}); // Загрузка переменных окружения из файла .env
 
-const PORT = process.env.PORT || 1; //наш порт
-const DB = process.env.DB || ""; //ссылка бд
-const app = express() //экземпляр, к нему нужно все писать
+const PORT = process.env.PORT || 1; // Наш порт
+const DB = process.env.DB || ""; // Ссылка на базу данных
+const app = express() // Экземпляр приложения Express
 
-app.use(express.json()) //добавление middleware для парсинга json в запросах
-app.use('/api', router); //использование запросов прописанных в router (можно использовать несколько)
+app.use(express.json()) // Добавление middleware для парсинга JSON в запросах
+app.use(express.static('static')) // Добавление middleware для обслуживания статических файлов из директории 'static'
+app.use(fileUpload({})) // Добавление middleware для загрузки файлов
+app.use('/api', router); // Использование запросов, прописанных в роутере
 app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
     console.error(err.stack);
     res.status(500).send({ message: err.message });
-}); //функция обработки ошибок
+}); // Функция обработки ошибок
   
-//функция для запуска приложения
+// Функция для запуска приложения
 async function startApp(){
     try {
-        await mongoose.connect(DB) //подключение к бд
-        app.listen(PORT, () => console.log("listening port 5000")) //запуск сервера
+        await mongoose.connect(DB) // Подключение к базе данных
+        app.listen(PORT, () => console.log("listening port 5000")) // Запуск сервера
     } catch(error) {
-        console.log(error) //вывод ошибок в консоль
+        console.log(error) // Вывод ошибок в консоль
     }
 }
 

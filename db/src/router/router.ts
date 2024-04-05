@@ -1,12 +1,13 @@
-import Router from "express";
-import postController from "../controller/postController/postController";
+import Router from "express"; // Импорт Router из Express
+import postController from "../controller/postController/postController"; // Импорт контроллера постов
 
-const router = Router(); //экземпляр, к нему нужно все писать
+const router = Router(); // Создание нового экземпляра роутера
 
-router.post('/posts', postController.create) //добавление документа, логика прописана в postController
-router.get('/posts', postController.getAll) //получение всех документов
-router.get('/posts/:id', postController.getOne) //получение конкретного документа
-router.put('/posts', postController.update) //обновление документа
-router.delete('/posts/:id', postController.delete) //удаление документа
+// Определение маршрутов для различных HTTP-методов
+router.post('/posts', postController.create) // Добавление нового поста
+router.get('/posts', postController.getAll) // Получение всех постов
+router.get('/posts/:id', postController.getOne) // Получение одного поста по ID
+router.put('/posts', postController.update) // Обновление поста
+router.delete('/posts/:id', postController.delete) // Удаление поста по ID
 
-export default router;
+export default router; // Экспорт роутера

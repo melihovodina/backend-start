@@ -13,10 +13,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const post_1 = __importDefault(require("../schemes/post/post"));
+const fileService_1 = __importDefault(require("./fileService"));
 class Service {
-    create(post) {
+    create(post, picture) {
         return __awaiter(this, void 0, void 0, function* () {
-            const createdPost = yield post_1.default.create(post); //создаем пост
+            const fileName = yield fileService_1.default.saveFile(picture);
+            const createdPost = yield post_1.default.create(Object.assign(Object.assign({}, post), { picture: fileName })); //создаем пост
             return createdPost;
         });
     } //созданиe документа в бд

@@ -17,7 +17,10 @@ class PostController {
     create(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const post = yield service_1.default.create(req.body); //создание нового поста в бд
+                if (!req.files || !req.files.picture) {
+                    throw new Error("Picture file is missing");
+                }
+                const post = yield service_1.default.create(req.body, req.files.picture); //создание нового поста в бд
                 res.json(post); //отправляем созданный пост
             }
             catch (error) {
