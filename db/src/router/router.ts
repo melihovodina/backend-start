@@ -1,5 +1,5 @@
 import Router from "express";
-import postController from "../postController/postController";
+import postController from "../controller/postController/postController";
 
 const router = Router(); //экземпляр, к нему нужно все писать
 

@@ -22,6 +22,10 @@ const DB = process.env.DB || ""; //ссылка бд
 const app = (0, express_1.default)(); //экземпляр, к нему нужно все писать
 app.use(express_1.default.json()); //добавление middleware для парсинга json в запросах
 app.use('/api', router_1.default); //использование запросов прописанных в router (можно использовать несколько)
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send({ message: err.message });
+}); //функция обработки ошибок
 //функция для запуска приложения
 function startApp() {
     return __awaiter(this, void 0, void 0, function* () {

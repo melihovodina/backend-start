@@ -10,7 +10,11 @@ const app = express() //экземпляр, к нему нужно все пис
 
 app.use(express.json()) //добавление middleware для парсинга json в запросах
 app.use('/api', router); //использование запросов прописанных в router (можно использовать несколько)
-
+app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+    console.error(err.stack);
+    res.status(500).send({ message: err.message });
+}); //функция обработки ошибок
+  
 //функция для запуска приложения
 async function startApp(){
     try {

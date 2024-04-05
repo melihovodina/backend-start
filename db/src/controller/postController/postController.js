@@ -12,72 +12,62 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const post_1 = __importDefault(require("../post/post"));
+const service_1 = __importDefault(require("../../service/service"));
 class PostController {
-    create(req, res) {
+    create(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { author, title, content, picture } = req.body; //извлечение данных из тела запроса
-                const post = yield post_1.default.create({ author, title, content, picture }); //создание нового поста в бд
+                const post = yield service_1.default.create(req.body); //создание нового поста в бд
                 res.json(post); //отправляем созданный пост
             }
             catch (error) {
-                res.status(500).json(error); //обработка ошибки
+                next(error); //обработка ошибки
             }
         });
     } //логика создания документа в бд
-    getAll(req, res) {
+    getAll(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const posts = yield post_1.default.find();
-                return res.json(posts);
+                const posts = yield service_1.default.getAll(); //поск в ходе которого получем все посты
+                return res.json(posts); //отправляем посты
             }
             catch (error) {
-                res.status(500).json(error);
+                next(error);
             }
         });
-    }
-    getOne(req, res) {
+    } //получение всех доков
+    getOne(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { id } = req.params;
-                const post = yield post_1.default.findById(id);
+                const post = yield service_1.default.getOne(req.params.id); //ищем документ с таким _id
+                return res.json(post); //отправляем пост
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    } //получение конкретного дока   
+    update(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const updatedPost = yield service_1.default.update(req.body); //находим нужный пост и обновляем его
+                return res.json(updatedPost); //отправляем обновленный пост
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    } //обновление по _id
+    delete(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const post = yield service_1.default.delete(req.params.id);
                 return res.json(post);
             }
             catch (error) {
-                res.status(500).json(error);
+                next(error);
             }
         });
-    }
-    update(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const post = req.body;
-                if (!post._id) {
-                    res.status(404).json({ message: "Id required" });
-                }
-                const updatedPost = yield post_1.default.findByIdAndUpdate(post._id, post, { new: true });
-                return res.json(updatedPost);
-            }
-            catch (error) {
-                res.status(500).json(error);
-            }
-        });
-    }
-    delete(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { id } = req.params;
-                if (!id) {
-                    res.status(400).json({ message: "Id is required" });
-                }
-                const post = yield post_1.default.findByIdAndDelete(id);
-                return res.json(post);
-            }
-            catch (error) {
-                res.status(500).json(error);
-            }
-        });
-    }
+    } //удаление дока
 }
 exports.default = new PostController();
